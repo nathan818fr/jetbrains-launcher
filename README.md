@@ -18,11 +18,50 @@ Storing `.idea` in a separate directory has several advantages:
 
 ## Installation
 
-One-liners to install the scripts in `~/.local/bin`:
+Download `jetbrains-scripts.sh`, rename it to the name of the JetBrains IDE you
+want to use (e.g. `idea` or `idea.sh`), and put it in your `PATH`.
+
+One-liners to download and install the scripts in `~/.local/bin`:
 
 - `idea` (IntelliJ IDEA, ultimate or community)
   ```shell
-  curl -fL https://github.com/nathan818fr/jetbrains-scripts/raw/main/idea.sh | install -vDT /dev/stdin ~/.local/bin/idea
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/idea
+  ```
+- `pycharm` (PyCharm, professional or community)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/pycharm
+  ```
+- `webstorm` (WebStorm)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/webstorm
+  ```
+- `phpstorm` (PhpStorm)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/phpstorm
+  ```
+- `clion` (CLion)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/clion
+  ```
+- `rubymine` (RubyMine)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/rubymine
+  ```
+- `rustrover` (RustRover)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/rustrover
+  ```
+- `goland` (GoLand)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/goland
+  ```
+- `datagrip` (DataGrip)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/datagrip
+  ```
+- `dataspell` (DataSpell)
+  ```shell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/dataspell
   ```
 
 ## Usage
