@@ -1,6 +1,6 @@
-# JetBrains Scripts
+# JetBrains Launcher
 
-This project contains scripts to open your projects in a JetBrains IDE, but with
+A command-line launcher to open your projects in a JetBrains IDE, but with
 a twist: **it stores the IDE config (`.idea`) in a separate directory!**
 
 ## Why is this beneficial?
@@ -18,55 +18,55 @@ Storing `.idea` in a separate directory has several advantages:
 
 ## Installation
 
-Download `jetbrains-scripts.sh`, rename it to the name of the JetBrains IDE you
+Download `jetbrains-launcher.sh`, rename it to the name of the JetBrains IDE you
 want to use (e.g. `idea` or `idea.sh`), and put it in your `PATH`.
 
-One-liners to download and install the scripts in `~/.local/bin`:
+One-liners to download and install the launcher in `~/.local/bin`:
 
 - `idea` (IntelliJ IDEA, ultimate or community)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/idea
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/idea
   ```
 - `pycharm` (PyCharm, professional or community)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/pycharm
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/pycharm
   ```
 - `webstorm` (WebStorm)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/webstorm
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/webstorm
   ```
 - `phpstorm` (PhpStorm)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/phpstorm
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/phpstorm
   ```
 - `clion` (CLion)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/clion
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/clion
   ```
 - `rubymine` (RubyMine)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/rubymine
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rubymine
   ```
 - `rustrover` (RustRover)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/rustrover
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rustrover
   ```
 - `goland` (GoLand)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/goland
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/goland
   ```
 - `datagrip` (DataGrip)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/datagrip
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/datagrip
   ```
 - `dataspell` (DataSpell)
   ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-scripts/raw/main/jetbrains-scripts.sh | install -vDT /dev/stdin ~/.local/bin/dataspell
+  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/dataspell
   ```
 
 ## Usage
 
-Use these scripts to open your projects from the command line rather than from
+Use this launcher to open your projects from the command line rather than from
 the JetBrains IDEs interfaces. e.g.:
 ```shell
 # Open ~/projects/my-project with IntelliJ IDEA:
@@ -76,9 +76,10 @@ idea ~/projects/my-project
 idea .
 ```
 
-If a project has been opened once, you can re-open it from the "Recent Projects"
-interface.
-But you should NOT open it from "File > Open...".
+👉️ If a project has been opened once with this launcher, you can re-open it
+from the "Recent Projects" interface (or you can use this launcher again).
+
+⚠️ But you should NOT open it from "File > Open...".
 
 ---
 

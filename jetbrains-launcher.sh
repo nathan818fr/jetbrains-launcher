@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# Source: https://github.com/nathan818fr/jetbrains-scripts
+# Source: https://github.com/nathan818fr/jetbrains-launcher
 # Author: Nathan Poirier <nathan@poirier.io>
-# Revision: 2023-11-15.1
+# Revision: 2023-11-16.0
 # Dependencies:
 # - bash
 # - coreutils (basename, cat, mkdir, nohup, realpath, rm, tr)
@@ -18,8 +18,8 @@ declare -r DEFAULT_JETBRAINS_PROJECTS_DIR="${XDG_DATA_HOME}/JetBrainsProjects"
 declare -r JETBRAINS_PROJECTS_DIR=${JETBRAINS_PROJECTS_DIR:-$DEFAULT_JETBRAINS_PROJECTS_DIR}
 
 function detect_ide() {
-  # to test during development, use: JETBRAINS_SCRIPTS_IDE_OVERRIDE=idea ./jetbrains-scripts.sh
-  case "$(basename "${JETBRAINS_SCRIPTS_IDE_OVERRIDE:-$0}" .sh)" in
+  # to test during development, use: JETBRAINS_LAUNCHER_IDE_OVERRIDE=idea ./jetbrains-launcher.sh
+  case "$(basename "${JETBRAINS_LAUNCHER_IDE_OVERRIDE:-$0}" .sh)" in
   idea | intellij | intellij-idea)
     ide_id='idea'
     ide_name='IntelliJ IDEA'
