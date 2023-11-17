@@ -10,7 +10,7 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-11-17.1'
+declare -r VERSION='2023-11-17.2'
 declare -r XDG_DATA_HOME=${XDG_DATA_HOME:-${HOME}/.local/share}
 declare -r DEFAULT_JETBRAINS_APPS_DIR="${XDG_DATA_HOME}/JetBrains/Toolbox/apps"
 declare -r JETBRAINS_APPS_DIR=${JETBRAINS_APPS_DIR:-$DEFAULT_JETBRAINS_APPS_DIR}
@@ -351,7 +351,7 @@ function find_ide_command() {
 
   # if not found, print error and fail
   printf 'error: %s not found in "%s"\n' "$ide_name" "$JETBRAINS_APPS_DIR" >&2
-  printf 'hint: Intall it with the JetBrains Toolbox or set %s to the path of "%s"\n' "$ide_command_env" "$ide_command_name" >&2
+  printf 'hint: Install it with the JetBrains Toolbox or set %s to the path of "%s"\n' "$ide_command_env" "$ide_command_name" >&2
   return 1
 }
 
