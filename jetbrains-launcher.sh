@@ -2,7 +2,6 @@
 #
 # Source: https://github.com/nathan818fr/jetbrains-launcher
 # Author: Nathan Poirier <nathan@poirier.io>
-# Revision: 2023-11-16.0
 # Dependencies:
 # - bash
 # - coreutils (basename, cat, mkdir, nohup, realpath, rm, tr)
@@ -11,6 +10,7 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
+declare -r VERSION='2023-11-17.0'
 declare -r XDG_DATA_HOME=${XDG_DATA_HOME:-${HOME}/.local/share}
 declare -r DEFAULT_JETBRAINS_APPS_DIR="${XDG_DATA_HOME}/JetBrains/Toolbox/apps"
 declare -r JETBRAINS_APPS_DIR=${JETBRAINS_APPS_DIR:-$DEFAULT_JETBRAINS_APPS_DIR}
@@ -104,6 +104,7 @@ function detect_ide() {
   # TODO: Check if AppCode can be supported
   # TODO: Check if MPS can be supported
   *)
+    print_launcher_version >&2 # --version will not be accessible in this case, so print it here to facilitate debugging
     printf 'error: Unable to detect the IDE you want to open\n' >&2
     printf 'hint: Rename this script to "idea", "pycharm", etc.\n' >&2
     return 1
@@ -115,9 +116,9 @@ function detect_ide() {
   ide_command_env="JETBRAINS_${ide_id^^}_COMMAND"
 }
 
-function usage() {
+function print_usage() {
   cat <<EOF
-Usage: $0 [options] <project-path>
+Usage: $(basename "$0") [options] <project-path>
 
 Opens a project in ${ide_name}, but stores its configuration (.idea) in a
 separate directory.
@@ -138,23 +139,32 @@ Arguments:
 
 Options:
   -h, --help      Show this help message and exit
+  -v, --version   Show version information and exit
   --reset         Reset existing project configuration (if any) before starting
                   ${ide_name}
   --no-detach     Start ${ide_name} in foreground instead of detaching it
 EOF
 }
 
+function print_launcher_version() {
+  printf 'JetBrains Launcher version: %s (https://github.com/nathan818fr/jetbrains-launcher)\n' "$VERSION"
+}
+
 function main() {
   detect_ide
 
-  # parse arguments
-  local arg_project opt_reset=false opt_no_detach=false
-  eval set -- "$(getopt -o h --long help,reset,no-detach -- "$@")"
+  # parse options
+  local arg_project opt_help=false opt_version=false opt_reset=false opt_no_detach=false
+  eval set -- "$(getopt -o hv --long help,version,reset,no-detach -- "$@")"
   while true; do
     case "$1" in
     -h | --help)
-      usage
-      return 0
+      opt_help=true
+      shift
+      ;;
+    -v | --version)
+      opt_version=true
+      shift
       ;;
     --reset)
       opt_reset=true
@@ -170,19 +180,38 @@ function main() {
       ;;
     *)
       printf 'error: Invalid option "%s"\n\n' "$1" >&2
-      usage >&2
+      print_usage >&2
       return 1
       ;;
     esac
   done
+
+  # perform alternative actions if requested
+  if [[ "$opt_help" = true ]]; then
+    print_usage
+    return 0
+  fi
+
+  if [[ "$opt_version" = true ]]; then
+    print_launcher_version
+    local ide_command
+    ide_command="$(find_ide_command || true)"
+    if [[ -n "$ide_command" ]]; then
+      "$ide_command" --version || true
+    fi
+    return 0
+  fi
+
+  # or continue the default action
+  # parse positional arguments
   if [[ $# -lt 1 ]]; then
     printf 'error: Missing project path\n\n' >&2
-    usage >&2
+    print_usage >&2
     return 1
   fi
   if [[ $# -gt 1 ]]; then
     printf 'error: Too many arguments\n\n' >&2
-    usage >&2
+    print_usage >&2
     return 1
   fi
   arg_project="$1"
