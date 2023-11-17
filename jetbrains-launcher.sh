@@ -10,7 +10,7 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-11-17.0'
+declare -r VERSION='2023-11-17.1'
 declare -r XDG_DATA_HOME=${XDG_DATA_HOME:-${HOME}/.local/share}
 declare -r DEFAULT_JETBRAINS_APPS_DIR="${XDG_DATA_HOME}/JetBrains/Toolbox/apps"
 declare -r JETBRAINS_APPS_DIR=${JETBRAINS_APPS_DIR:-$DEFAULT_JETBRAINS_APPS_DIR}
@@ -24,7 +24,7 @@ function detect_ide() {
     ide_id='idea'
     ide_name='IntelliJ IDEA'
     ide_command_name='idea.sh'
-    ide_apps=('intellij-idea-ultimate' 'intelij-idea-community-edition')
+    ide_apps=('intellij-idea-ultimate' 'intellij-idea-community-edition')
     ide_module_type='JAVA_MODULE'
     ;;
   pycharm)
