@@ -58,10 +58,11 @@ function update_oneliners() {
 <details>
   <summary><code>${ide_id}</code> (<img alt="${ide_description%%,*} logo" src=".readme/logos/${ide_id}.svg?raw=true" width="16" height="16"> ${ide_description})</summary>
 
-  🐧 Linux:
-  \`\`\`shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/${ide_id}
-  \`\`\`
+  - **🐧 Linux, 🪟 Windows with Bash**\\\\
+    Download the launcher to \`~/.local/bin/${ide_id}\` (make sure \`~/.local/bin\` is in your PATH):
+    \`\`\`shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/${ide_id}
+    \`\`\`
 </details>
 EOF
     done

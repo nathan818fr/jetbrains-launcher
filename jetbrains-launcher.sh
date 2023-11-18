@@ -10,12 +10,62 @@
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-11-17.2'
-declare -r XDG_DATA_HOME=${XDG_DATA_HOME:-${HOME}/.local/share}
-declare -r DEFAULT_JETBRAINS_APPS_DIR="${XDG_DATA_HOME}/JetBrains/Toolbox/apps"
-declare -r JETBRAINS_APPS_DIR=${JETBRAINS_APPS_DIR:-$DEFAULT_JETBRAINS_APPS_DIR}
-declare -r DEFAULT_JETBRAINS_PROJECTS_DIR="${XDG_DATA_HOME}/JetBrainsProjects"
-declare -r JETBRAINS_PROJECTS_DIR=${JETBRAINS_PROJECTS_DIR:-$DEFAULT_JETBRAINS_PROJECTS_DIR}
+declare -r VERSION='2023-11-18.0'
+
+function detect_platform() {
+  case "${OSTYPE:-}" in
+  cygwin* | msys* | win32)
+    launcher_platform='win_cyg'
+    ;;
+  *)
+    if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
+      launcher_platform='win_wsl'
+    else
+      launcher_platform='linux'
+    fi
+    ;;
+  esac
+
+  case "$launcher_platform" in
+  win*)
+    if [[ "$launcher_platform" = 'win_cyg' ]]; then
+      function winvar() { printf '%s' "${!1}"; }
+    else
+      function winvar() {
+        local val
+        val=$(cmd.exe /c "<nul set /p =%$1%" 2>/dev/null || true)
+        if [[ -z "$val" ]]; then
+          printf 'error: Unable to read windows variable %s\n' "$1" >&2
+          return 1
+        fi
+        printf '%s' "$val"
+      }
+    fi
+    local localappdata appdata
+    localappdata=$(read_path "$(winvar LOCALAPPDATA)")
+    appdata=$(read_path "$(winvar APPDATA)")
+    default_jetbrains_apps_dir="${localappdata}/Programs"
+    default_jetbrains_projects_dir="${appdata}/JetBrainsProjects"
+    ;;
+  *)
+    local xdg_data_home
+    xdg_data_home=$(read_path "${XDG_DATA_HOME:-${HOME}/.local/share}")
+    default_jetbrains_apps_dir="${xdg_data_home}/JetBrains/Toolbox/apps"
+    default_jetbrains_projects_dir="${xdg_data_home}/JetBrainsProjects"
+    ;;
+  esac
+
+  if [[ -n "${JETBRAINS_APPS_DIR:-}" ]]; then
+    jetbrains_apps_dir=$(read_path "$JETBRAINS_APPS_DIR")
+  else
+    jetbrains_apps_dir=$default_jetbrains_apps_dir
+  fi
+  if [[ -n "${JETBRAINS_PROJECTS_DIR:-}" ]]; then
+    jetbrains_projects_dir=$(read_path "$JETBRAINS_PROJECTS_DIR")
+  else
+    jetbrains_projects_dir=$default_jetbrains_projects_dir
+  fi
+}
 
 function detect_ide() {
   # to test during development, use: JETBRAINS_LAUNCHER_IDE_OVERRIDE=idea ./jetbrains-launcher.sh
@@ -23,81 +73,61 @@ function detect_ide() {
   idea | intellij | intellij-idea)
     ide_id='idea'
     ide_name='IntelliJ IDEA'
-    ide_command_name='idea.sh'
-    ide_apps=('intellij-idea-ultimate' 'intellij-idea-community-edition')
+    ide_apps=('IntelliJ IDEA Ultimate' 'IntelliJ IDEA Community Edition')
     ide_module_type='JAVA_MODULE'
     ;;
   pycharm)
     ide_id='pycharm'
     ide_name='PyCharm'
-    ide_command_name='pycharm.sh'
-    ide_apps=('pycharm-professional' 'pycharm-community')
+    ide_apps=('PyCharm Professional' 'PyCharm Community')
     ide_module_type='PYTHON_MODULE'
     ;;
   webstorm)
     ide_id='webstorm'
     ide_name='WebStorm'
-    ide_command_name='webstorm.sh'
-    ide_apps=('webstorm')
     ide_module_type='WEB_MODULE'
     ide_module_exclude_folders=('.tmp' 'temp' 'tmp')
     ;;
   phpstorm)
     ide_id='phpstorm'
     ide_name='PhpStorm'
-    ide_command_name='phpstorm.sh'
-    ide_apps=('phpstorm')
     ide_module_type='WEB_MODULE'
     ;;
   clion)
     ide_id='clion'
     ide_name='CLion'
-    ide_command_name='clion.sh'
-    ide_apps=('clion')
     ide_module_type='CPP_MODULE'
     ;;
   clion-nova)
     ide_id='clion' # CLion Nova will replace CLion, so we keep the same id
     ide_name='CLion Nova'
-    ide_command_name='clion.sh'
-    ide_apps=('clion-nova')
     ide_module_type='CPP_MODULE'
     ;;
   rubymine)
     ide_id='rubymine'
     ide_name='RubyMine'
-    ide_command_name='rubymine.sh'
-    ide_apps=('rubymine')
     ide_module_type='RUBY_MODULE'
     ide_module_testsource_folders=('features' 'spec' 'test')
     ;;
   rustrover)
     ide_id='rustrover'
     ide_name='RustRover'
-    ide_command_name='rustrover.sh'
-    ide_apps=('rustrover')
     ide_module_type='EMPTY_MODULE'
     ;;
   goland)
     ide_id='goland'
     ide_name='GoLand'
-    ide_command_name='goland.sh'
-    ide_apps=('goland')
     ide_module_type='WEB_MODULE'
     ide_module_components=('Go')
     ;;
   datagrip)
     ide_id='datagrip'
     ide_name='DataGrip'
-    ide_command_name='datagrip.sh'
-    ide_apps=('datagrip')
     ide_module_type='DBE_MODULE'
     ;;
   dataspell)
     ide_id='dataspell'
     ide_name='DataSpell'
-    ide_command_name='dataspell.sh'
-    ide_apps=('dataspell')
     ide_module_type='PYTHON_MODULE'
     ;;
   # TODO: Check if Rider can be supported
@@ -110,9 +140,19 @@ function detect_ide() {
     return 1
     ;;
   esac
-  if [[ ! -v ide_module_components ]]; then declare -a ide_module_components; fi
-  if [[ ! -v ide_module_exclude_folders ]]; then declare -a ide_module_exclude_folders; fi
-  if [[ ! -v ide_module_testsource_folders ]]; then declare -a ide_module_testsource_folders; fi
+
+  if [[ ! -v ide_apps ]]; then
+    ide_apps=("$ide_name")
+  fi
+  if [[ ! -v ide_bins ]]; then
+    case "$launcher_platform" in
+    win*) ide_bins=("${ide_id}64.exe" "${ide_id}.exe") ;;
+    *) ide_bins=("${ide_id}.sh") ;;
+    esac
+  fi
+  if [[ ! -v ide_module_components ]]; then ide_module_components=(); fi
+  if [[ ! -v ide_module_exclude_folders ]]; then ide_module_exclude_folders=(); fi
+  if [[ ! -v ide_module_testsource_folders ]]; then ide_module_testsource_folders=(); fi
   ide_command_env="JETBRAINS_${ide_id^^}_COMMAND"
 }
 
@@ -126,13 +166,13 @@ separate directory.
 Environment variables:
   JETBRAINS_APPS_DIR
     Path to the JetBrains Toolbox apps directory
-    Default: ${DEFAULT_JETBRAINS_APPS_DIR}
+    Default: $(write_path "$default_jetbrains_apps_dir")
   ${ide_command_env}
-    Path to the ${ide_name} command (${ide_command_name})
+    Path to the ${ide_name} command (${ide_bins[0]})
     Default: auto-detected from JETBRAINS_APPS_DIR
   JETBRAINS_PROJECTS_DIR
     Path to the directory where projects configurations are stored
-    Default: ${DEFAULT_JETBRAINS_PROJECTS_DIR}
+    Default: $(write_path "$default_jetbrains_projects_dir")
 
 Arguments:
   <project-path>  Path to the project directory to open
@@ -148,13 +188,15 @@ EOF
 
 function print_launcher_version() {
   printf 'JetBrains Launcher version: %s (https://github.com/nathan818fr/jetbrains-launcher)\n' "$VERSION"
+  printf 'JetBrains Launcher platform: %s\n' "${launcher_platform:-unknown}"
 }
 
 function main() {
+  detect_platform
   detect_ide
 
   # parse options
-  local arg_project opt_help=false opt_version=false opt_reset=false opt_no_detach=false
+  local opt_help=false opt_version=false opt_reset=false opt_no_detach=false
   eval set -- "$(getopt -o hv --long help,version,reset,no-detach -- "$@")"
   while true; do
     case "$1" in
@@ -214,15 +256,14 @@ function main() {
     print_usage >&2
     return 1
   fi
-  arg_project="$1"
 
   local ide_command project_dir conf_dir
   ide_command="$(find_ide_command)"
-  project_dir=$(realpath -m -- "$arg_project")
-  conf_dir="${JETBRAINS_PROJECTS_DIR}/${ide_id}/${project_dir#/}"
+  project_dir=$(read_path "$1")
+  conf_dir="${jetbrains_projects_dir}/${ide_id}/$(appendable_path "$project_dir")"
 
-  printf 'Project directory: %s\n' "$project_dir"
-  printf 'Configuration directory: %s\n' "$conf_dir"
+  printf 'Project directory: %s\n' "$(write_path "$project_dir")"
+  printf 'Configuration directory: %s\n' "$(write_path "$conf_dir")"
 
   # ensure project directory exists
   if [[ ! -e "$project_dir" ]]; then
@@ -257,10 +298,10 @@ function main() {
   # start the IDE
   if [[ "$opt_no_detach" = true ]]; then
     printf 'Starting %s\n' "$ide_name"
-    exec "$ide_command" "$conf_dir"
+    exec_attached "$ide_command" "$(write_path "$conf_dir")"
   else
     printf 'Starting %s (detached, use --no-detach to run in foreground)\n' "$ide_name"
-    exec nohup "$ide_command" "$conf_dir" >/dev/null 2>/dev/null </dev/null &
+    exec_detached "$ide_command" "$(write_path "$conf_dir")"
   fi
 }
 
@@ -289,12 +330,12 @@ function write_conf_common() {
   )
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$(xml_str_encode "$project_dir")">$(
+    <content url="file://$(xml_str_encode "$(write_path "$project_dir")")">$(
     for e in "${ide_module_exclude_folders[@]}"; do
-      printf '\n      <excludeFolder url="file://%s/%s" />' "$(xml_str_encode "$project_dir")" "$(xml_str_encode "$e")"
+      printf '\n      <excludeFolder url="file://%s/%s" />' "$(xml_str_encode "$(write_path "$project_dir")")" "$(xml_str_encode "$e")"
     done
     for e in "${ide_module_testsource_folders[@]}"; do
-      printf '\n      <sourceFolder url="file://%s/%s" isTestSource="true" />' "$(xml_str_encode "$project_dir")" "$(xml_str_encode "$e")"
+      printf '\n      <sourceFolder url="file://%s/%s" isTestSource="true" />' "$(xml_str_encode "$(write_path "$project_dir")")" "$(xml_str_encode "$e")"
     done
   )
     </content>
@@ -307,7 +348,7 @@ EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectRootManager">
-    <output url="file://$(xml_str_encode "$project_dir")/out" />
+    <output url="file://$(xml_str_encode "$(write_path "$project_dir")")/out" />
   </component>
 </project>
 EOF
@@ -322,7 +363,7 @@ EOF
   cat <<EOF >"${conf_dir}/.idea/misc.xml"
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakeWorkspace" PROJECT_DIR="$(xml_str_encode "$project_dir")" />
+  <component name="CMakeWorkspace" PROJECT_DIR="$(xml_str_encode "$(write_path "$project_dir")")" />
 </project>
 EOF
   write_conf_modules
@@ -331,38 +372,119 @@ EOF
 function find_ide_command() {
   # if JETBRAINS_*_COMMAND is set, use it
   if [[ -n "${!ide_command_env:-}" ]]; then
-    if [[ ! -x "${!ide_command_env}" ]]; then
+    local command
+    command="$(read_path "${!ide_command_env:-}")"
+    if [[ ! -x "$command" ]]; then
       printf 'error: %s is not executable\n' "$ide_command_env" >&2
       return 1
     fi
-    printf '%s' "${!ide_command_env}"
+    printf '%s' "$command"
     return
   fi
 
   # otherwise, try to find it in the defaults locations
-  local app
+  local app bin
   for app in "${ide_apps[@]}"; do
-    local command="${JETBRAINS_APPS_DIR}/${app}/bin/${ide_command_name}"
-    if [[ -x "$command" ]]; then
-      printf '%s' "$command"
-      return
-    fi
+    for bin in "${ide_bins[@]}"; do
+      local app_dir
+      case "$launcher_platform" in
+      win*) app_dir="$app" ;;
+      *)
+        app_dir="${app,,}"        # lowercase
+        app_dir="${app_dir// /-}" # replace spaces with dashes
+        ;;
+      esac
+      local command="${jetbrains_apps_dir}/${app_dir}/bin/${bin}"
+      if [[ -x "$command" ]]; then
+        printf '%s' "$command"
+        return
+      fi
+    done
   done
 
   # if not found, print error and fail
-  printf 'error: %s not found in "%s"\n' "$ide_name" "$JETBRAINS_APPS_DIR" >&2
-  printf 'hint: Install it with the JetBrains Toolbox or set %s to the path of "%s"\n' "$ide_command_env" "$ide_command_name" >&2
+  printf 'error: %s not found in "%s"\n' "$ide_name" "$(write_path "$jetbrains_apps_dir")" >&2
+  printf 'hint: Install it with the JetBrains Toolbox or set %s to the path of "%s"\n' "$ide_command_env" "${ide_bins[0]}" >&2
   return 1
+}
+
+# Convert a system path to an absolute unix path
+function read_path() {
+  local path=$1
+  case "$launcher_platform" in
+  win_cyg)
+    # Convert all paths using cygpath (unix mode, absolute path)
+    # It supports both unix and windows paths
+    cygpath -u -a -- "$path"
+    ;;
+  win_wsl)
+    case "$path" in
+    [a-zA-Z]:\\* | [a-zA-Z]:/* | \\\\* | //*)
+      # Convert windows path using wslpath (unix mode, absolute path)
+      wslpath -u -a -- "$path"
+      ;;
+    *)
+      # Convert unix path using realpath
+      realpath -m -- "$path"
+      ;;
+    esac
+    ;;
+  *)
+    realpath -m -- "$path"
+    ;;
+  esac
+}
+
+# Convert unix path to system path
+function write_path() {
+  local path=$1
+  case "$launcher_platform" in
+  win_cyg)
+    # Convert using cygpath (mixed mode, absolute path, long form)
+    cygpath -m -a -l -- "$path"
+    ;;
+  win_wsl)
+    # Convert using wslpath (mixed mode, absolute path)
+    wslpath -m -a -- "$path"
+    ;;
+  *)
+    printf '%s' "$path"
+    ;;
+  esac
+}
+
+function appendable_path() {
+  local path=$1
+  path=$(write_path "$path")
+  case "$launcher_platform" in
+  win*)
+    path=${path//\\/\/} # replace backslashes with slashes
+    path=${path//:/}    # remove colons
+    path=${path#//}     # remove leading double slash
+    ;;
+  *)
+    path=${path#/} # remove leading slash
+    ;;
+  esac
+  printf '%s' "$path"
+}
+
+function exec_attached() {
+  exec "$@"
+}
+
+function exec_detached() {
+  exec nohup "$@" >/dev/null 2>/dev/null </dev/null &
 }
 
 # Encode a string for use in XML texts or attribute values
 function xml_str_encode() {
-  local encoded="$1"
-  encoded="${encoded//&/\&amp;}"
-  encoded="${encoded//</\&lt;}"
-  encoded="${encoded//>/\&gt;}"
-  encoded="${encoded//\"/\&quot;}"
-  encoded="${encoded//\'/\&apos;}"
+  local encoded=$1
+  encoded=${encoded//&/\&amp;}
+  encoded=${encoded//</\&lt;}
+  encoded=${encoded//>/\&gt;}
+  encoded=${encoded//\"/\&quot;}
+  encoded=${encoded//\'/\&apos;}
   printf '%s' "$encoded"
 }
 

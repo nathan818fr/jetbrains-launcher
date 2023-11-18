@@ -18,91 +18,106 @@ Storing `.idea` in a separate directory has several advantages:
 
 ## Installation
 
-Download `jetbrains-launcher.sh`, rename it to the name of the JetBrains IDE you
-want to use (e.g. `idea` or `idea.sh`), and put it in your `PATH`.
+Supported platforms:
+- 🐧 Linux (and other Unix-like systems)
+- 🪟 Windows with Bash (WSL/Git Bash/MinGW/MSYS/Cygwin)
 
-One-liners to download and install the launcher in `~/.local/bin`:
+To install or update jetbrains-launcher, you should download
+`jetbrains-launcher.sh`, rename it to the name of the JetBrains IDE you want to
+use (e.g. `idea` or `idea.sh`), and put it in your `PATH`.
+
+One-liners to do this are available below:
 
 <!--BEGIN ONE-LINERS-->
 <details>
   <summary><code>idea</code> (<img alt="IntelliJ IDEA logo" src=".readme/logos/idea.svg?raw=true" width="16" height="16"> IntelliJ IDEA, ultimate or community)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/idea
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/idea` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/idea
+    ```
 </details>
 <details>
   <summary><code>pycharm</code> (<img alt="PyCharm logo" src=".readme/logos/pycharm.svg?raw=true" width="16" height="16"> PyCharm, professional or community)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/pycharm
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/pycharm` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/pycharm
+    ```
 </details>
 <details>
   <summary><code>webstorm</code> (<img alt="WebStorm logo" src=".readme/logos/webstorm.svg?raw=true" width="16" height="16"> WebStorm)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/webstorm
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/webstorm` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/webstorm
+    ```
 </details>
 <details>
   <summary><code>phpstorm</code> (<img alt="PhpStorm logo" src=".readme/logos/phpstorm.svg?raw=true" width="16" height="16"> PhpStorm)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/phpstorm
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/phpstorm` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/phpstorm
+    ```
 </details>
 <details>
   <summary><code>clion</code> (<img alt="CLion logo" src=".readme/logos/clion.svg?raw=true" width="16" height="16"> CLion)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/clion
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/clion` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/clion
+    ```
 </details>
 <details>
   <summary><code>rubymine</code> (<img alt="RubyMine logo" src=".readme/logos/rubymine.svg?raw=true" width="16" height="16"> RubyMine)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rubymine
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/rubymine` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rubymine
+    ```
 </details>
 <details>
   <summary><code>rustrover</code> (<img alt="RustRover logo" src=".readme/logos/rustrover.svg?raw=true" width="16" height="16"> RustRover)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rustrover
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/rustrover` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rustrover
+    ```
 </details>
 <details>
   <summary><code>goland</code> (<img alt="GoLand logo" src=".readme/logos/goland.svg?raw=true" width="16" height="16"> GoLand)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/goland
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/goland` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/goland
+    ```
 </details>
 <details>
   <summary><code>datagrip</code> (<img alt="DataGrip logo" src=".readme/logos/datagrip.svg?raw=true" width="16" height="16"> DataGrip)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/datagrip
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/datagrip` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/datagrip
+    ```
 </details>
 <details>
   <summary><code>dataspell</code> (<img alt="DataSpell logo" src=".readme/logos/dataspell.svg?raw=true" width="16" height="16"> DataSpell)</summary>
 
-  🐧 Linux:
-  ```shell
-  curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/dataspell
-  ```
+  - **🐧 Linux, 🪟 Windows with Bash**\
+    Download the launcher to `~/.local/bin/dataspell` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/dataspell
+    ```
 </details>
 <!--END ONE-LINERS-->
 
