@@ -20,6 +20,7 @@ Storing `.idea` in a separate directory has several advantages:
 
 Supported platforms:
 - 🐧 Linux (and other Unix-like systems)
+- 🍏 macOS
 - 🪟 Windows with Bash (WSL/Git Bash/MinGW/MSYS/Cygwin)
 
 To install or update jetbrains-launcher, you should download
@@ -37,6 +38,12 @@ One-liners to do this are available below:
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/idea
     ```
+
+  - **🍏 macOS** (require [a recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/idea` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/idea && chmod +x ~/.local/bin/idea
+    ```
 </details>
 <details>
   <summary><code>pycharm</code> (<img alt="PyCharm logo" src=".readme/logos/pycharm.svg?raw=true" width="16" height="16"> PyCharm, professional or community)</summary>
@@ -45,6 +52,12 @@ One-liners to do this are available below:
     Download the launcher to `~/.local/bin/pycharm` (make sure `~/.local/bin` is in your PATH):
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/pycharm
+    ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/pycharm` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/pycharm && chmod +x ~/.local/bin/pycharm
     ```
 </details>
 <details>
@@ -55,6 +68,12 @@ One-liners to do this are available below:
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/webstorm
     ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/webstorm` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/webstorm && chmod +x ~/.local/bin/webstorm
+    ```
 </details>
 <details>
   <summary><code>phpstorm</code> (<img alt="PhpStorm logo" src=".readme/logos/phpstorm.svg?raw=true" width="16" height="16"> PhpStorm)</summary>
@@ -63,6 +82,12 @@ One-liners to do this are available below:
     Download the launcher to `~/.local/bin/phpstorm` (make sure `~/.local/bin` is in your PATH):
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/phpstorm
+    ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/phpstorm` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/phpstorm && chmod +x ~/.local/bin/phpstorm
     ```
 </details>
 <details>
@@ -73,6 +98,12 @@ One-liners to do this are available below:
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/clion
     ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/clion` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/clion && chmod +x ~/.local/bin/clion
+    ```
 </details>
 <details>
   <summary><code>rubymine</code> (<img alt="RubyMine logo" src=".readme/logos/rubymine.svg?raw=true" width="16" height="16"> RubyMine)</summary>
@@ -81,6 +112,12 @@ One-liners to do this are available below:
     Download the launcher to `~/.local/bin/rubymine` (make sure `~/.local/bin` is in your PATH):
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rubymine
+    ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/rubymine` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/rubymine && chmod +x ~/.local/bin/rubymine
     ```
 </details>
 <details>
@@ -91,6 +128,12 @@ One-liners to do this are available below:
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/rustrover
     ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/rustrover` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/rustrover && chmod +x ~/.local/bin/rustrover
+    ```
 </details>
 <details>
   <summary><code>goland</code> (<img alt="GoLand logo" src=".readme/logos/goland.svg?raw=true" width="16" height="16"> GoLand)</summary>
@@ -99,6 +142,12 @@ One-liners to do this are available below:
     Download the launcher to `~/.local/bin/goland` (make sure `~/.local/bin` is in your PATH):
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/goland
+    ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/goland` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/goland && chmod +x ~/.local/bin/goland
     ```
 </details>
 <details>
@@ -109,6 +158,12 @@ One-liners to do this are available below:
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/datagrip
     ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/datagrip` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/datagrip && chmod +x ~/.local/bin/datagrip
+    ```
 </details>
 <details>
   <summary><code>dataspell</code> (<img alt="DataSpell logo" src=".readme/logos/dataspell.svg?raw=true" width="16" height="16"> DataSpell)</summary>
@@ -117,6 +172,12 @@ One-liners to do this are available below:
     Download the launcher to `~/.local/bin/dataspell` (make sure `~/.local/bin` is in your PATH):
     ```shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/dataspell
+    ```
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\
+    Download the launcher to `~/.local/bin/dataspell` (make sure `~/.local/bin` is in your PATH):
+    ```shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/dataspell && chmod +x ~/.local/bin/dataspell
     ```
 </details>
 <!--END ONE-LINERS-->

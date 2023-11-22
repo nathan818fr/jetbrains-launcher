@@ -2,24 +2,37 @@
 #
 # Source: https://github.com/nathan818fr/jetbrains-launcher
 # Author: Nathan Poirier <nathan@poirier.io>
-# Dependencies:
+# Debian dependencies:
 # - bash
 # - coreutils (basename, cat, mkdir, nohup, realpath, rm, tr)
 # - util-linux (getopt)
+# Homebrew dependencies:
+# - bash
+# - coreutils
+# - gnu-getopt
 #
+if [[ "${BASH_VERSINFO[0]}" -lt 4 ]] || [[ "${BASH_VERSINFO[0]}" -eq 4 && "${BASH_VERSINFO[1]}" -lt 2 ]]; then
+  printf 'error: Bash 4.2 or higher is required\n' >&2
+  exit 1
+fi
+
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-11-22.0'
+declare -r VERSION='2023-11-22.1'
 
 function detect_platform() {
   # Detect the launcher platform
   # - win_cyg: Windows, Cygwin-like (Cygwin, MSYS2, Git Bash, ...)
   # - win_wsl: Windows, WSL
+  # - mac: macOS
   # - linux: Linux or others unix-like systems (default)
   case "${OSTYPE:-}" in
   cygwin* | msys* | win32)
     declare -gr launcher_platform='win_cyg'
+    ;;
+  darwin*)
+    declare -gr launcher_platform='mac'
     ;;
   *)
     if [[ -n "${WSL_DISTRO_NAME:-}" ]]; then
@@ -51,6 +64,10 @@ function detect_platform() {
     appdata=$(read_path "$(winvar APPDATA)")
     declare -gr default_jetbrains_apps_dir="${localappdata}/Programs"
     declare -gr default_jetbrains_projects_dir="${appdata}/JetBrainsProjects"
+    ;;
+  mac)
+    declare -gr default_jetbrains_apps_dir="${HOME}/Applications"
+    declare -gr default_jetbrains_projects_dir="${HOME}/Library/JetBrainsProjects"
     ;;
   *)
     local xdg_data_home
@@ -169,8 +186,9 @@ function detect_ide() {
   fi
   if [[ ! -v ide_bins ]]; then
     case "$launcher_platform" in
-    win*) declare -gr ide_bins=("${ide_id}64.exe" "${ide_id}.exe") ;;
-    *) declare -gr ide_bins=("${ide_id}.sh") ;;
+    win*) declare -gr ide_bins=("bin/${ide_id}64.exe" "bin/${ide_id}.exe") ;;
+    mac) declare -gr ide_bins=("MacOS/${ide_id}") ;;
+    *) declare -gr ide_bins=("bin/${ide_id}.sh") ;;
     esac
   fi
   if [[ ! -v ide_module_components ]]; then declare -gr ide_module_components=(); fi
@@ -220,7 +238,7 @@ function main() {
 
   # parse options
   local opt_help=false opt_version=false opt_reset=false opt_no_detach=false
-  eval set -- "$(getopt -o hv --long help,version,reset,no-detach -- "$@")"
+  eval set -- "$(gnu_getopt -o hv --long help,version,reset,no-detach -- "$@")"
   while true; do
     case "$1" in
     -h | --help)
@@ -412,12 +430,13 @@ function find_ide_command() {
       local app_dir
       case "$launcher_platform" in
       win*) app_dir="$app" ;;
+      mac) app_dir="${app}.app/Contents" ;;
       *)
         app_dir="${app,,}"        # lowercase
         app_dir="${app_dir// /-}" # replace spaces with dashes
         ;;
       esac
-      local command="${jetbrains_apps_dir}/${app_dir}/bin/${bin}"
+      local command="${jetbrains_apps_dir}/${app_dir}/${bin}"
       if [[ -x "$command" ]]; then
         printf '%s' "$command"
         return
@@ -490,6 +509,37 @@ function appendable_path() {
     ;;
   esac
   printf '%s' "$path"
+}
+
+function gnu_getopt() {
+  case "$launcher_platform" in
+  mac)
+    # macOS ships with a BSD version of getopt, which is not compatible with the GNU version
+
+    # Try to use the Homebrew gnu-getopt
+    local getopt_path
+    getopt_path="$(brew --prefix 2>/dev/null || echo /usr/local)/opt/gnu-getopt/bin/getopt"
+    if [[ -x "$getopt_path" ]]; then
+      "$getopt_path" "$@"
+      return
+    fi
+
+    # If getopt is the GNU version, use it
+    local getopt_version
+    getopt_version=$(getopt --version 2>/dev/null || true)
+    if [[ "$getopt_version" = *util-linux* ]]; then
+      getopt "$@"
+      return
+    fi
+
+    printf 'error: GNU getopt not found\n' >&2
+    printf 'hint: Install it with "brew install gnu-getopt"\n' >&2
+    return 1
+    ;;
+  *)
+    getopt "$@"
+    ;;
+  esac
 }
 
 function exec_attached() {

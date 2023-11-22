@@ -63,6 +63,12 @@ function update_oneliners() {
     \`\`\`shell
     curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh | install -vDT /dev/stdin ~/.local/bin/${ide_id}
     \`\`\`
+
+  - **🍏 macOS** (require [recent bash version](https://formulae.brew.sh/formula/bash), [coreutils](https://formulae.brew.sh/formula/coreutils) and [gnu-getopt](https://formulae.brew.sh/formula/gnu-getopt))\\\\
+    Download the launcher to \`~/.local/bin/${ide_id}\` (make sure \`~/.local/bin\` is in your PATH):
+    \`\`\`shell
+    mkdir -p ~/.local/bin && curl -fsSL https://github.com/nathan818fr/jetbrains-launcher/raw/main/jetbrains-launcher.sh -o ~/.local/bin/${ide_id} && chmod +x ~/.local/bin/${ide_id}
+    \`\`\`
 </details>
 EOF
     done
