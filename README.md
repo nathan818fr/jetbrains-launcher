@@ -218,7 +218,8 @@ Options:
   summarizes the most useful ones)._
 - `--reset` – Reset existing project configuration (if any) before starting
   the IDE.<br>
-  _This removes the `.idea` directory created by this launcher._
+  _This deletes the `.idea` directory created by this launcher, not the one
+  that may already exist in your project directory._
 - `--no-detach` – Start the IDE in foreground instead of detaching it.
 
 Environment variables:
