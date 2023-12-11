@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-12-11.2'
+declare -r VERSION='2023-12-11.3'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -488,17 +488,22 @@ function read_path() {
   win_wsl)
     case "$path" in
     [a-zA-Z]:\\* | [a-zA-Z]:/* | \\\\* | //*)
-      # Convert windows path using wslpath (unix mode, absolute path)
+      # Convert windows paths using wslpath (unix mode, absolute path)
       wslpath -u -a -- "$path"
       ;;
     *)
-      # Convert unix path using realpath
-      realpath -m -- "$path"
+      # Normalize unix paths using realpath (don't resolve symlinks, allow missing components)
+      realpath -s -m -- "$path"
       ;;
     esac
     ;;
+  mac)
+    # Normalize paths using GNU realpath (don't resolve symlinks, allow missing components)
+    grealpath -s -m -- "$path"
+    ;;
   *)
-    realpath -m -- "$path"
+    # Normalize paths using realpath (don't resolve symlinks, allow missing components)
+    realpath -s -m -- "$path"
     ;;
   esac
 }
