@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-11-22.1'
+declare -r VERSION='2023-12-11.0'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -86,7 +86,7 @@ function detect_platform() {
     declare -gr jetbrains_apps_dir=$default_jetbrains_apps_dir
   fi
   if [[ -n "${JETBRAINS_PROJECTS_DIR:-}" ]]; then
-    path=$(read_path "$JETBRAINS_APPS_DIR")
+    path=$(read_path "$JETBRAINS_PROJECTS_DIR")
     declare -gr jetbrains_projects_dir=$path
   else
     declare -gr jetbrains_projects_dir=$default_jetbrains_projects_dir
