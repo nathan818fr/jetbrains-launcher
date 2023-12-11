@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-12-11.0'
+declare -r VERSION='2023-12-11.1'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -109,63 +109,63 @@ function detect_ide() {
   # - ide_module_exclude_folders: list of .iml additional exclude folders
   # - ide_module_testsource_folders: list of .iml additional test source folders
   # - ide_command_env: environment variable to override the IDE command
-  case "$launcher_ide" in
-  idea | intellij | intellij-idea)
+  case "${launcher_ide,,}" in
+  *idea* | *intellij*)
     declare -gr ide_id='idea'
     declare -gr ide_name='IntelliJ IDEA'
     declare -gr ide_apps=('IntelliJ IDEA Ultimate' 'IntelliJ IDEA Community Edition')
     declare -gr ide_module_type='JAVA_MODULE'
     ;;
-  pycharm)
+  *pycharm*)
     declare -gr ide_id='pycharm'
     declare -gr ide_name='PyCharm'
     declare -gr ide_apps=('PyCharm Professional' 'PyCharm Community')
     declare -gr ide_module_type='PYTHON_MODULE'
     ;;
-  webstorm)
+  *webstorm*)
     declare -gr ide_id='webstorm'
     declare -gr ide_name='WebStorm'
     declare -gr ide_module_type='WEB_MODULE'
     declare -gr ide_module_exclude_folders=('.tmp' 'temp' 'tmp')
     ;;
-  phpstorm)
+  *phpstorm*)
     declare -gr ide_id='phpstorm'
     declare -gr ide_name='PhpStorm'
     declare -gr ide_module_type='WEB_MODULE'
     ;;
-  clion)
-    declare -gr ide_id='clion'
-    declare -gr ide_name='CLion'
-    declare -gr ide_module_type='CPP_MODULE'
-    ;;
-  clion-nova)
+  *clion*nova*)
     declare -gr ide_id='clion' # CLion Nova will replace CLion, so we keep the same id
     declare -gr ide_name='CLion Nova'
     declare -gr ide_module_type='CPP_MODULE'
     ;;
-  rubymine)
+  *clion*)
+    declare -gr ide_id='clion'
+    declare -gr ide_name='CLion'
+    declare -gr ide_module_type='CPP_MODULE'
+    ;;
+  *rubymine*)
     declare -gr ide_id='rubymine'
     declare -gr ide_name='RubyMine'
     declare -gr ide_module_type='RUBY_MODULE'
     declare -gr ide_module_testsource_folders=('features' 'spec' 'test')
     ;;
-  rustrover)
+  *rustrover*)
     declare -gr ide_id='rustrover'
     declare -gr ide_name='RustRover'
     declare -gr ide_module_type='EMPTY_MODULE'
     ;;
-  goland)
+  *goland*)
     declare -gr ide_id='goland'
     declare -gr ide_name='GoLand'
     declare -gr ide_module_type='WEB_MODULE'
     declare -gr ide_module_components=('Go')
     ;;
-  datagrip)
+  *datagrip*)
     declare -gr ide_id='datagrip'
     declare -gr ide_name='DataGrip'
     declare -gr ide_module_type='DBE_MODULE'
     ;;
-  dataspell)
+  *dataspell*)
     declare -gr ide_id='dataspell'
     declare -gr ide_name='DataSpell'
     declare -gr ide_module_type='PYTHON_MODULE'
