@@ -40,7 +40,7 @@ One-liners to do this are available below:
 
 <!--BEGIN ONE-LINERS-->
 <details>
-  <summary><code>idea</code> (<img alt="IntelliJ IDEA logo" src=".readme/logos/idea.svg?raw=true" width="16" height="16"> IntelliJ IDEA, ultimate or community)</summary>
+  <summary><code>idea</code> (<img alt="IntelliJ IDEA logo" src=".readme/logos/idea.svg?raw=true" width="16" height="16"> IntelliJ IDEA, ultimate or community - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/idea` (make sure `~/.local/bin` is in your PATH):
@@ -55,7 +55,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>pycharm</code> (<img alt="PyCharm logo" src=".readme/logos/pycharm.svg?raw=true" width="16" height="16"> PyCharm, professional or community)</summary>
+  <summary><code>pycharm</code> (<img alt="PyCharm logo" src=".readme/logos/pycharm.svg?raw=true" width="16" height="16"> PyCharm, professional or community - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/pycharm` (make sure `~/.local/bin` is in your PATH):
@@ -70,7 +70,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>webstorm</code> (<img alt="WebStorm logo" src=".readme/logos/webstorm.svg?raw=true" width="16" height="16"> WebStorm)</summary>
+  <summary><code>webstorm</code> (<img alt="WebStorm logo" src=".readme/logos/webstorm.svg?raw=true" width="16" height="16"> WebStorm - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/webstorm` (make sure `~/.local/bin` is in your PATH):
@@ -85,7 +85,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>phpstorm</code> (<img alt="PhpStorm logo" src=".readme/logos/phpstorm.svg?raw=true" width="16" height="16"> PhpStorm)</summary>
+  <summary><code>phpstorm</code> (<img alt="PhpStorm logo" src=".readme/logos/phpstorm.svg?raw=true" width="16" height="16"> PhpStorm - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/phpstorm` (make sure `~/.local/bin` is in your PATH):
@@ -100,7 +100,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>clion</code> (<img alt="CLion logo" src=".readme/logos/clion.svg?raw=true" width="16" height="16"> CLion)</summary>
+  <summary><code>clion</code> (<img alt="CLion logo" src=".readme/logos/clion.svg?raw=true" width="16" height="16"> CLion - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/clion` (make sure `~/.local/bin` is in your PATH):
@@ -115,7 +115,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>rubymine</code> (<img alt="RubyMine logo" src=".readme/logos/rubymine.svg?raw=true" width="16" height="16"> RubyMine)</summary>
+  <summary><code>rubymine</code> (<img alt="RubyMine logo" src=".readme/logos/rubymine.svg?raw=true" width="16" height="16"> RubyMine - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/rubymine` (make sure `~/.local/bin` is in your PATH):
@@ -130,7 +130,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>rustrover</code> (<img alt="RustRover logo" src=".readme/logos/rustrover.svg?raw=true" width="16" height="16"> RustRover)</summary>
+  <summary><code>rustrover</code> (<img alt="RustRover logo" src=".readme/logos/rustrover.svg?raw=true" width="16" height="16"> RustRover - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/rustrover` (make sure `~/.local/bin` is in your PATH):
@@ -145,7 +145,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>goland</code> (<img alt="GoLand logo" src=".readme/logos/goland.svg?raw=true" width="16" height="16"> GoLand)</summary>
+  <summary><code>goland</code> (<img alt="GoLand logo" src=".readme/logos/goland.svg?raw=true" width="16" height="16"> GoLand - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/goland` (make sure `~/.local/bin` is in your PATH):
@@ -160,7 +160,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>datagrip</code> (<img alt="DataGrip logo" src=".readme/logos/datagrip.svg?raw=true" width="16" height="16"> DataGrip)</summary>
+  <summary><code>datagrip</code> (<img alt="DataGrip logo" src=".readme/logos/datagrip.svg?raw=true" width="16" height="16"> DataGrip - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/datagrip` (make sure `~/.local/bin` is in your PATH):
@@ -175,7 +175,7 @@ One-liners to do this are available below:
     ```
 </details>
 <details>
-  <summary><code>dataspell</code> (<img alt="DataSpell logo" src=".readme/logos/dataspell.svg?raw=true" width="16" height="16"> DataSpell)</summary>
+  <summary><code>dataspell</code> (<img alt="DataSpell logo" src=".readme/logos/dataspell.svg?raw=true" width="16" height="16"> DataSpell - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\
     Download the launcher to `~/.local/bin/dataspell` (make sure `~/.local/bin` is in your PATH):
@@ -222,9 +222,60 @@ Options:
   that may already exist in your project directory._
 - `--no-detach` – Start the IDE in foreground instead of detaching it.
 
-Environment variables:
-- `JETBRAINS_PROJECTS_DIR` – Path to the directory where projects configurations
-  are stored.<br>
-  Defaults to `~/.local/share/JetBrainsProjects`.
-
 ---
+
+## Configuration
+
+### Script naming
+
+The launcher script should be named after the JetBrains IDE you want to use.<br>
+This check is case-insensitive and allows partial matches
+(e.g. `Idea` and `open-idea-ide` are valid names for IntelliJ IDEA).
+
+<details><summary>Supported names (click to expand)</summary>
+
+It's case-insensitive.
+`*` is a wildcard that matches none or any character(s).<br>
+
+- `*idea*` or `*intellij*` for IntelliJ IDEA
+- `*pycharm*` for PyCharm
+- `*webstorm*` for WebStorm
+- `*phpstorm*` for PhpStorm
+- `*clion*nova*` for CLion Nova
+- `*clion*` for CLion
+- `*rubymine*` for RubyMine
+- `*rustrover*` for RustRover
+- `*goland*` for GoLand
+- `*datagrip*` for DataGrip
+- `*dataspell*` for DataSpell
+</details>
+
+If this behavior is not suitable for you, you can override it by setting the
+`JETBRAINS_LAUNCHER_IDE_OVERRIDE` environment variable.<br>
+e.g., adding an alias to your shell configuration:
+```shell
+alias java_ide='JETBRAINS_LAUNCHER_IDE_OVERRIDE=idea /path/to/jetbrains-launcher.sh'
+# now you can use: java_ide ~/projects/my-project
+```
+
+### Projects configuration directory
+
+By default, this launcher stores the IDE projects' configurations under
+`~/.local/share/JetBrainsProjects`.<br>
+You can change this by setting the `JETBRAINS_PROJECTS_DIR` environment
+variable.
+
+> 👨‍🏫 If you open the project `/home/me/my-project` in IntelliJ IDEA with this
+> launcher, the IDE configuration will be stored in
+> `${JETBRAINS_PROJECTS_DIR}/home/me/my-project`.
+
+## Contributing
+
+If you encounter a bug or have a feature request, please
+[open an issue][issues] to let me know. 😄
+
+If you are a developer and want to contribute to this project, consider
+[opening an issue][issues] to discuss your idea before submitting a pull
+request.
+
+[issues]: https://github.com/nathan818fr/jetbrains-launcher/issues

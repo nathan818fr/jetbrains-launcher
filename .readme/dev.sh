@@ -56,7 +56,7 @@ function update_oneliners() {
       IFS='|' read -r ide_id ide_description _ <<<"${ide}"
       cat <<EOF
 <details>
-  <summary><code>${ide_id}</code> (<img alt="${ide_description%%,*} logo" src=".readme/logos/${ide_id}.svg?raw=true" width="16" height="16"> ${ide_description})</summary>
+  <summary><code>${ide_id}</code> (<img alt="${ide_description%%,*} logo" src=".readme/logos/${ide_id}.svg?raw=true" width="16" height="16"> ${ide_description} - click to expand)</summary>
 
   - **🐧 Linux, 🪟 Windows (using Bash)**\\\\
     Download the launcher to \`~/.local/bin/${ide_id}\` (make sure \`~/.local/bin\` is in your PATH):
