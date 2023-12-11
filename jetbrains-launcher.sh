@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-12-11.1'
+declare -r VERSION='2023-12-11.2'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -237,8 +237,8 @@ function main() {
   detect_ide
 
   # parse options
-  local opt_help=false opt_version=false opt_reset=false opt_no_detach=false
-  eval set -- "$(gnu_getopt -o hv --long help,version,reset,no-detach -- "$@")"
+  local opt_help=false opt_version=false opt_reset=false opt_no_detach=false opt_debug_report=false
+  eval set -- "$(gnu_getopt -o hv --long help,version,reset,no-detach,debug-report -- "$@")"
   while true; do
     case "$1" in
     -h | --help)
@@ -255,6 +255,10 @@ function main() {
       ;;
     --no-detach)
       opt_no_detach=true
+      shift
+      ;;
+    --debug-report) # undocumented option, for debugging purposes
+      opt_debug_report=true
       shift
       ;;
     --)
@@ -282,6 +286,28 @@ function main() {
     if [[ -n "$ide_command" ]]; then
       "$ide_command" --version || true
     fi
+    return 0
+  fi
+
+  # shellcheck disable=SC2016
+  if [[ "$opt_debug_report" = true ]]; then
+    printf '$VERSION=%q\n' "${VERSION:-}"
+    printf '$JETBRAINS_APPS_DIR=%q\n' "${JETBRAINS_APPS_DIR:-}"
+    printf '$JETBRAINS_PROJECTS_DIR=%q\n' "${JETBRAINS_PROJECTS_DIR:-}"
+    printf '$JETBRAINS_LAUNCHER_IDE_OVERRIDE=%q\n' "${JETBRAINS_LAUNCHER_IDE_OVERRIDE:-}"
+    printf '$%s=%q\n' "${ide_command_env:-}" "${!ide_command_env:-}"
+    printf '$launcher_platform=%q\n' "${launcher_platform:-}"
+    printf '$jetbrains_apps_dir=%q\n' "${jetbrains_apps_dir:-}"
+    printf '$jetbrains_projects_dir=%q\n' "${jetbrains_projects_dir:-}"
+    printf '$ide_id=%q\n' "${ide_id:-}"
+    printf 'pwd()=%q\n' "$(pwd || true)"
+    local test_path
+    for test_path in 'Hello123' 'Hello123/World' 'Hello123\World' '/Foo123' 'C:\Foo123' 'C:/Foo123'; do
+      printf 'read_path(%q)=%q\n' "$test_path" "$(read_path "$test_path" || true)"
+      printf 'write_path(%q)=%q\n' "$test_path" "$(write_path "$test_path" || true)"
+      printf 'appendable_path(%q)=%q\n' "$test_path" "$(appendable_path "$test_path" || true)"
+    done
+    printf 'find_ide_command()=%q\n' "$(find_ide_command || true)"
     return 0
   fi
 
