@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-12-12.0'
+declare -r VERSION='2023-12-12.WIP'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -224,11 +224,14 @@ Arguments:
   <project-path>  Path to the project directory to open
 
 Options:
-  -h, --help      Show this help message and exit
-  -v, --version   Show version information and exit
   --no-detach     Start ${ide_name} in foreground instead of detaching it
   --reset         Reset existing project configuration (if any) before starting
                   ${ide_name}
+
+  --clean-all     Remove all configurations of missing projects; and exit.
+                  (useful for cleaning up after moving or deleting projects)
+  -v, --version   Show version information; and exit
+  -h, --help      Show this help message; and exit
 EOF
 }
 
@@ -237,8 +240,8 @@ function main() {
   detect_ide
 
   # parse options
-  local act_help=false act_version=false act_debug_report=false opt_no_detach=false opt_reset=false
-  eval set -- "$(gnu_getopt -o hv --long help,version,debug-report,no-detach,reset -- "$@")"
+  local act_help=false act_version=false act_debug_report=false act_clean_all=false opt_no_detach=false opt_reset=false
+  eval set -- "$(gnu_getopt -o hv --long help,version,debug-report,clean-all,no-detach,reset -- "$@")"
   while true; do
     case "$1" in
     -h | --help)
@@ -251,6 +254,10 @@ function main() {
       ;;
     --debug-report) # undocumented option, for debugging purposes
       act_debug_report=true
+      shift
+      ;;
+    --clean-all)
+      act_clean_all=true
       shift
       ;;
     --no-detach)
@@ -286,6 +293,11 @@ function main() {
 
   if [[ "$act_debug_report" = true ]]; then
     print_debug_report
+    return 0
+  fi
+
+  if [[ "$act_clean_all" = true ]]; then
+    clean_all
     return 0
   fi
 
@@ -378,6 +390,56 @@ function print_debug_report() {
     printf 'appendable_path(%q)=%q\n' "$test_path" "$(appendable_path "$test_path" || true)"
   done
   printf 'find_ide_command()=%q\n' "$(find_ide_command || true)"
+}
+
+function clean_all() {
+  # Important: this function only remove .idea and empty directories inside $jetbrains_projects_dir!
+  # But it never removes other files that may have been added manually by the user, etc.
+  # Also, it doesn't follow symlinks for safety.
+
+  # Important: keep the trailing separator here, this is a prefix (see usage in "if" and "remove prefix" below)
+  local all_conf_prefix="${jetbrains_projects_dir}/${ide_id}/"
+
+  if [[ -d "$all_conf_prefix" ]]; then
+    # Iterate over all .idea directories within our configuration directory
+    local idea_dir
+    while IFS= read -r -d '' idea_dir; do
+      if [[ "$idea_dir" != "$all_conf_prefix"* ]]; then continue; fi
+
+      # Resolve the project directory
+      local project_dir
+
+      # - remove prefix and suffix
+      project_dir=${idea_dir#"$all_conf_prefix"}
+      if [[ "$launcher_platform" = mac ]]; then
+        # macOS find may append another separator at the beginning that we need to remove
+        project_dir=${project_dir#/}
+      fi
+      project_dir=${project_dir%%/.idea} # remove suffix
+
+      # - revert appendable_path
+      if [[ "$launcher_platform" = win* ]]; then
+        # on Windows, skip UNC paths: they are too complicated, slow to resolve, etc.
+        # this will skip WSL paths when being outside WSL
+        # also note that wslpath can fail if an UNC path is not accessible
+        project_dir=$(revert_appendable_path "$project_dir" 2>/dev/null || true)
+        if [[ -z "$project_dir" || "$project_dir" = //* ]]; then continue; fi
+      else
+        project_dir=$(revert_appendable_path "$project_dir")
+      fi
+
+      # Remove .idea if the project directory no longer exists
+      if [[ ! -e "$project_dir" ]]; then
+        printf 'Removing configuration of the missing project: %s\n' "$project_dir"
+        rm -rf -- "$idea_dir" # no trailing separator here, so rm won't follow symlink if any
+      fi
+    done < <(find -P "$all_conf_prefix" -type d -name '.idea' -prune -print0)
+
+    # Finally, remove empty directories that may have been left behind
+    find -P "$all_conf_prefix" -mindepth 1 -type d -empty -delete
+  fi
+
+  printf "Done, it's all clean!\n"
 }
 
 function write_conf_modules() {
@@ -534,17 +596,37 @@ function write_path() {
   esac
 }
 
+# Convert an absolute unix path to an "appendable" unix path
 function appendable_path() {
   local path=$1
-  path=$(write_path "$path")
   case "$launcher_platform" in
   win*)
+    path=$(write_path "$path")
     path=${path//\\/\/} # replace backslashes with slashes
     path=${path//:/}    # remove colons
     path=${path#//}     # remove leading double slash
     ;;
   *)
     path=${path#/} # remove leading slash
+    ;;
+  esac
+  printf '%s' "$path"
+}
+
+# Convert an "appendable" unix path to an absolute unix path
+function revert_appendable_path() {
+  local path=$1
+  case "$launcher_platform" in
+  win*)
+    case "$path" in
+    [a-zA-Z]/*) path="${path:0:1}:/${path:2}" ;; # re-add colons
+    *) path="//${path}" ;;                       # re-add leading double slash
+    esac
+    path=${path//\//\\} # replace slashes with backslashes
+    path=$(read_path "$path")
+    ;;
+  *)
+    path="/${path}" # re-add leading slash
     ;;
   esac
   printf '%s' "$path"
