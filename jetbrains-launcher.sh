@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-12-11.3'
+declare -r VERSION='2023-12-12.0'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -197,6 +197,11 @@ function detect_ide() {
   declare -gr ide_command_env="JETBRAINS_${ide_id^^}_COMMAND"
 }
 
+function print_launcher_version() {
+  printf 'JetBrains Launcher version: %s (https://github.com/nathan818fr/jetbrains-launcher)\n' "$VERSION"
+  printf 'JetBrains Launcher platform: %s\n' "${launcher_platform:-unknown}"
+}
+
 function print_usage() {
   cat <<EOF
 Usage: $(basename "$0") [options] <project-path>
@@ -221,15 +226,10 @@ Arguments:
 Options:
   -h, --help      Show this help message and exit
   -v, --version   Show version information and exit
+  --no-detach     Start ${ide_name} in foreground instead of detaching it
   --reset         Reset existing project configuration (if any) before starting
                   ${ide_name}
-  --no-detach     Start ${ide_name} in foreground instead of detaching it
 EOF
-}
-
-function print_launcher_version() {
-  printf 'JetBrains Launcher version: %s (https://github.com/nathan818fr/jetbrains-launcher)\n' "$VERSION"
-  printf 'JetBrains Launcher platform: %s\n' "${launcher_platform:-unknown}"
 }
 
 function main() {
@@ -237,28 +237,28 @@ function main() {
   detect_ide
 
   # parse options
-  local opt_help=false opt_version=false opt_reset=false opt_no_detach=false opt_debug_report=false
-  eval set -- "$(gnu_getopt -o hv --long help,version,reset,no-detach,debug-report -- "$@")"
+  local act_help=false act_version=false act_debug_report=false opt_no_detach=false opt_reset=false
+  eval set -- "$(gnu_getopt -o hv --long help,version,debug-report,no-detach,reset -- "$@")"
   while true; do
     case "$1" in
     -h | --help)
-      opt_help=true
+      act_help=true
       shift
       ;;
     -v | --version)
-      opt_version=true
+      act_version=true
       shift
       ;;
-    --reset)
-      opt_reset=true
+    --debug-report) # undocumented option, for debugging purposes
+      act_debug_report=true
       shift
       ;;
     --no-detach)
       opt_no_detach=true
       shift
       ;;
-    --debug-report) # undocumented option, for debugging purposes
-      opt_debug_report=true
+    --reset)
+      opt_reset=true
       shift
       ;;
     --)
@@ -274,40 +274,18 @@ function main() {
   done
 
   # perform alternative actions if requested
-  if [[ "$opt_help" = true ]]; then
+  if [[ "$act_help" = true ]]; then
     print_usage
     return 0
   fi
 
-  if [[ "$opt_version" = true ]]; then
-    print_launcher_version
-    local ide_command
-    ide_command="$(find_ide_command || true)"
-    if [[ -n "$ide_command" ]]; then
-      "$ide_command" --version || true
-    fi
+  if [[ "$act_version" = true ]]; then
+    print_version
     return 0
   fi
 
-  # shellcheck disable=SC2016
-  if [[ "$opt_debug_report" = true ]]; then
-    printf '$VERSION=%q\n' "${VERSION:-}"
-    printf '$JETBRAINS_APPS_DIR=%q\n' "${JETBRAINS_APPS_DIR:-}"
-    printf '$JETBRAINS_PROJECTS_DIR=%q\n' "${JETBRAINS_PROJECTS_DIR:-}"
-    printf '$JETBRAINS_LAUNCHER_IDE_OVERRIDE=%q\n' "${JETBRAINS_LAUNCHER_IDE_OVERRIDE:-}"
-    printf '$%s=%q\n' "${ide_command_env:-}" "${!ide_command_env:-}"
-    printf '$launcher_platform=%q\n' "${launcher_platform:-}"
-    printf '$jetbrains_apps_dir=%q\n' "${jetbrains_apps_dir:-}"
-    printf '$jetbrains_projects_dir=%q\n' "${jetbrains_projects_dir:-}"
-    printf '$ide_id=%q\n' "${ide_id:-}"
-    printf 'pwd()=%q\n' "$(pwd || true)"
-    local test_path
-    for test_path in 'Hello123' 'Hello123/World' 'Hello123\World' '/Foo123' 'C:\Foo123' 'C:/Foo123'; do
-      printf 'read_path(%q)=%q\n' "$test_path" "$(read_path "$test_path" || true)"
-      printf 'write_path(%q)=%q\n' "$test_path" "$(write_path "$test_path" || true)"
-      printf 'appendable_path(%q)=%q\n' "$test_path" "$(appendable_path "$test_path" || true)"
-    done
-    printf 'find_ide_command()=%q\n' "$(find_ide_command || true)"
+  if [[ "$act_debug_report" = true ]]; then
+    print_debug_report
     return 0
   fi
 
@@ -370,6 +348,36 @@ function main() {
     printf 'Starting %s (detached, use --no-detach to run in foreground)\n' "$ide_name"
     exec_detached "$ide_command" "$(write_path "$conf_dir")"
   fi
+}
+
+function print_version() {
+  print_launcher_version
+  local ide_command
+  ide_command="$(find_ide_command || true)"
+  if [[ -n "$ide_command" ]]; then
+    "$ide_command" --version || true
+  fi
+}
+
+# shellcheck disable=SC2016
+function print_debug_report() {
+  printf '$VERSION=%q\n' "${VERSION:-}"
+  printf '$JETBRAINS_APPS_DIR=%q\n' "${JETBRAINS_APPS_DIR:-}"
+  printf '$JETBRAINS_PROJECTS_DIR=%q\n' "${JETBRAINS_PROJECTS_DIR:-}"
+  printf '$JETBRAINS_LAUNCHER_IDE_OVERRIDE=%q\n' "${JETBRAINS_LAUNCHER_IDE_OVERRIDE:-}"
+  printf '$%s=%q\n' "${ide_command_env:-}" "${!ide_command_env:-}"
+  printf '$launcher_platform=%q\n' "${launcher_platform:-}"
+  printf '$jetbrains_apps_dir=%q\n' "${jetbrains_apps_dir:-}"
+  printf '$jetbrains_projects_dir=%q\n' "${jetbrains_projects_dir:-}"
+  printf '$ide_id=%q\n' "${ide_id:-}"
+  printf 'pwd()=%q\n' "$(pwd || true)"
+  local test_path
+  for test_path in 'Hello123' 'Hello123/World' 'Hello123\World' '/Foo123' 'C:\Foo123' 'C:/Foo123'; do
+    printf 'read_path(%q)=%q\n' "$test_path" "$(read_path "$test_path" || true)"
+    printf 'write_path(%q)=%q\n' "$test_path" "$(write_path "$test_path" || true)"
+    printf 'appendable_path(%q)=%q\n' "$test_path" "$(appendable_path "$test_path" || true)"
+  done
+  printf 'find_ide_command()=%q\n' "$(find_ide_command || true)"
 }
 
 function write_conf_modules() {
