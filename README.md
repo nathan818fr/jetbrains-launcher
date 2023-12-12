@@ -267,7 +267,7 @@ variable.
 
 > 👨‍🏫 If you open the project `/home/me/my-project` in IntelliJ IDEA with this
 > launcher, the IDE configuration will be stored in
-> `${JETBRAINS_PROJECTS_DIR}/home/me/my-project`.
+> `${JETBRAINS_PROJECTS_DIR}/idea/home/me/my-project`.
 
 ## Contributing
 
