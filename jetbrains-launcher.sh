@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2023-12-12.1'
+declare -r VERSION='2025-05-18.1'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -225,6 +225,7 @@ Arguments:
 
 Options:
   --no-detach     Start ${ide_name} in foreground instead of detaching it
+  --no-start      Do not start ${ide_name}, only initialize the configuration
   --reset         Reset existing project configuration (if any) before starting
                   ${ide_name}
 
@@ -240,8 +241,8 @@ function main() {
   detect_ide
 
   # parse options
-  local act_help=false act_version=false act_debug_report=false act_clean_all=false opt_no_detach=false opt_reset=false
-  eval set -- "$(gnu_getopt -o hv --long help,version,debug-report,clean-all,no-detach,reset -- "$@")"
+  local act_help=false act_version=false act_debug_report=false act_clean_all=false opt_no_detach=false opt_no_start=false opt_reset=false
+  eval set -- "$(gnu_getopt -o hv --long help,version,debug-report,clean-all,no-detach,no-start,reset -- "$@")"
   while true; do
     case "$1" in
     -h | --help)
@@ -262,6 +263,10 @@ function main() {
       ;;
     --no-detach)
       opt_no_detach=true
+      shift
+      ;;
+    --no-start)
+      opt_no_start=true
       shift
       ;;
     --reset)
@@ -353,7 +358,10 @@ function main() {
   fi
 
   # start the IDE
-  if [[ "$opt_no_detach" = true ]]; then
+  if [[ "$opt_no_start" = true ]]; then
+    printf 'Not starting %s (used --no-start)\n' "$ide_name"
+    return 0
+  elif [[ "$opt_no_detach" = true ]]; then
     printf 'Starting %s\n' "$ide_name"
     exec_attached "$ide_command" "$(write_path "$conf_dir")"
   else
