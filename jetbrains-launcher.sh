@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2025-05-18.1'
+declare -r VERSION='2025-05-18.2'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -372,6 +372,9 @@ function main() {
 
 function print_version() {
   print_launcher_version
+  if is_truthy "${JETBRAINS_LAUNCHER_NO_IDE_VERSION:-}"; then
+    return 0
+  fi
   local ide_command
   ide_command="$(find_ide_command || true)"
   if [[ -n "$ide_command" ]]; then
@@ -689,6 +692,13 @@ function xml_str_encode() {
   encoded=${encoded//\"/\&quot;}
   encoded=${encoded//\'/\&apos;}
   printf '%s' "$encoded"
+}
+
+function is_truthy() {
+  case "$1" in
+  1 | true | yes | on) return 0 ;;
+  *) return 1 ;;
+  esac
 }
 
 eval 'main "$@";exit "$?"'
