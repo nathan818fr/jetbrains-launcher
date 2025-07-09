@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2025-05-18.2'
+declare -r VERSION='2025-07-09.1'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -119,7 +119,7 @@ function detect_ide() {
   *pycharm*)
     declare -gr ide_id='pycharm'
     declare -gr ide_name='PyCharm'
-    declare -gr ide_apps=('PyCharm Professional' 'PyCharm Community')
+    declare -gr ide_apps=('PyCharm' 'PyCharm Professional' 'PyCharm Community')
     declare -gr ide_module_type='PYTHON_MODULE'
     ;;
   *webstorm*)
