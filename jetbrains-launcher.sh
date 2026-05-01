@@ -19,7 +19,7 @@ fi
 set -Eeuo pipefail
 shopt -s inherit_errexit
 
-declare -r VERSION='2025-07-09.1'
+declare -r VERSION='2026-05-01.1'
 
 function detect_platform() {
   # Detect the launcher platform
@@ -113,7 +113,7 @@ function detect_ide() {
   *idea* | *intellij*)
     declare -gr ide_id='idea'
     declare -gr ide_name='IntelliJ IDEA'
-    declare -gr ide_apps=('IntelliJ IDEA Ultimate' 'IntelliJ IDEA Community Edition')
+    declare -gr ide_apps=('IntelliJ IDEA' 'IntelliJ IDEA Ultimate' 'IntelliJ IDEA Community Edition')
     declare -gr ide_module_type='JAVA_MODULE'
     ;;
   *pycharm*)
